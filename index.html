@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#fffaf0">
+<title>9/23 志木ランチガチャ</title>
+<style>
+:root{
+  --text:#2e2925;--muted:#786f68;--line:#eee0d2;
+  --accent:#f39a48;--accent2:#f7c968;--rose:#eb7f91;--card:#fff;
+  --shadow:0 12px 30px rgba(88,57,31,.09)
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 0%,#fff0cf 0,transparent 32%),
+    radial-gradient(circle at 93% 6%,#ffe7e3 0,transparent 28%),
+    linear-gradient(180deg,#fffaf2,#fffdfb);
+}
+.wrap{max-width:920px;margin:0 auto;padding:16px 12px 56px}
+.hero{
+  color:#fff;
+  background:linear-gradient(135deg,#f49a48 0%,#f6b758 50%,#ee8c7f 100%);
+  border-radius:30px;padding:25px 19px;box-shadow:var(--shadow);
+  position:relative;overflow:hidden
+}
+.hero:after{content:"🍽️";position:absolute;right:16px;top:12px;font-size:58px;opacity:.2;transform:rotate(-8deg)}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.08em;margin-bottom:7px;opacity:.95}
+h1{margin:0 0 8px;font-size:clamp(27px,6vw,42px);line-height:1.15}
+.hero p{margin:0;line-height:1.75;font-size:14px;max-width:700px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font-size:12px;padding:7px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.16)}
+
+section{margin-top:25px}
+h2{font-size:22px;margin:0 0 6px}
+.sub{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.7}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:13px}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:22px;
+  padding:16px;box-shadow:var(--shadow);position:relative
+}
+.rank{
+  position:absolute;right:13px;top:13px;font-size:12px;font-weight:900;
+  background:#fff4df;color:#aa662a;border:1px solid #f6d8aa;border-radius:999px;padding:6px 9px
+}
+.name{font-size:18px;font-weight:900;line-height:1.35;margin:2px 0 8px;padding-right:74px}
+.badges{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.badge{font-size:11px;padding:5px 8px;border-radius:999px;background:#fff6df;border:1px solid #ffe0a9;color:#805912}
+.badge.green{background:#effaf3;border-color:#d3ead9;color:#2a6f49}
+.badge.pink{background:#fff0f3;border-color:#f4ccd6;color:#a44d62}
+.desc{font-size:13px;line-height:1.7;color:#514943;margin:0 0 11px}
+.meta{display:grid;gap:7px;background:#fffcf7;border:1px solid #f1e6da;border-radius:15px;padding:11px;font-size:12px;color:#665d56}
+.stars{letter-spacing:1px;color:#ef984b}
+.btn{
+  display:inline-flex;margin-top:11px;padding:10px 12px;border-radius:12px;
+  background:linear-gradient(135deg,#f39a48,#ef8c61);color:#fff;text-decoration:none;font-size:13px;font-weight:900
+}
+
+.gacha{
+  background:#fff;border:1px solid var(--line);border-radius:28px;
+  padding:18px;box-shadow:var(--shadow)
+}
+.gacha + .gacha{margin-top:18px}
+.gacha-head{text-align:center;margin-bottom:12px}
+.gacha-head .emoji{font-size:34px}
+.gacha-head h3{margin:4px 0 4px;font-size:22px}
+.gacha-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+
+.slot{
+  max-width:540px;margin:0 auto;border-radius:21px;padding:12px;
+  border:2px solid #f4d7b8;background:#fff
+}
+.slot-window{
+  position:relative;height:82px;overflow:hidden;border:1px solid #efe0d3;
+  border-radius:16px;background:linear-gradient(#fff,#fffaf6)
+}
+.slot-window:before,.slot-window:after{
+  content:"";position:absolute;left:0;right:0;height:18px;z-index:4;pointer-events:none
+}
+.slot-window:before{top:0;background:linear-gradient(#fff,rgba(255,255,255,0))}
+.slot-window:after{bottom:0;background:linear-gradient(rgba(255,255,255,0),#fff)}
+.focus{
+  position:absolute;z-index:3;left:8px;right:8px;top:50%;transform:translateY(-50%);
+  height:56px;border:2px dashed #f3b576;border-radius:14px;pointer-events:none
+}
+.slot-list{position:relative;z-index:2}
+.slot-item{
+  height:56px;display:flex;align-items:center;justify-content:center;text-align:center;
+  font-size:18px;font-weight:900;padding:0 10px
+}
+.actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:14px}
+.action-btn{border:none;border-radius:14px;padding:12px 16px;font-weight:900;font-size:14px;cursor:pointer}
+.action-btn.main{color:#fff;background:linear-gradient(135deg,#f39744,#ef825f);box-shadow:0 9px 20px rgba(230,125,74,.22)}
+.action-btn.alt{background:#fff;color:#564b46;border:1px solid #e8d7d1}
+.result{
+  max-width:640px;margin:14px auto 0;text-align:center;background:#fffaf4;
+  border:1px solid #f0e0d3;border-radius:18px;padding:15px;min-height:105px
+}
+.result small{color:#867a73}
+.result h4{font-size:24px;margin:6px 0}
+.result p{margin:0;color:#645a54;font-size:13px;line-height:1.7}
+.after{
+  background:radial-gradient(circle at 0 0,#fff0f5,transparent 36%),radial-gradient(circle at 100% 100%,#fff3df,transparent 34%),#fff
+}
+.after .slot{border-color:#f1cad3}
+.after .focus{border-color:#e9a4b3}
+.after .action-btn.main{background:linear-gradient(135deg,#e87391,#f39878)}
+.after .result{background:#fff9fb}
+.note{
+  margin-top:11px;text-align:center;font-size:12px;line-height:1.7;color:#796b63
+}
+.holiday-note{
+  margin-top:15px;padding:12px 13px;border-radius:16px;background:#fff8e9;
+  border:1px solid #f1dfb9;color:#6e5d3d;font-size:12px;line-height:1.75
+}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:9999}
+.piece{position:absolute;width:9px;height:14px;border-radius:3px;animation:fall 1.8s ease-out forwards}
+@keyframes fall{from{transform:translateY(-8vh) rotate(0);opacity:1}to{transform:translateY(110vh) rotate(760deg);opacity:0}}
+@media(max-width:640px){
+  .wrap{padding:11px 9px 40px}.hero{padding:21px 15px}.name{font-size:17px}.result h4{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">2026.09.23 WED / 秋分の日</div>
+  <h1>志木でランチ、どこ行く？🍽️</h1>
+  <p>安くておいしいをベースに、2人で行きやすさも考えた5候補。<br>
+  決まらなかったら、ランチガチャに全部任せる（笑）</p>
+  <div class="chips">
+    <span class="chip">💰 コスパ重視</span>
+    <span class="chip">🚉 志木駅周辺</span>
+    <span class="chip">🍴 ランチ5選</span>
+    <span class="chip">🎰 ガチャで決定</span>
+  </div>
+</header>
+
+<section>
+  <h2>ランチ候補 5選</h2>
+  <p class="sub">9/23（水・祝）を想定。安さだけでなく「2人で使いやすいか」も入れて並べています。</p>
+  <div id="cards" class="grid"></div>
+</section>
+
+<section>
+  <h2>① ランチを決める</h2>
+  <div class="gacha">
+    <div class="gacha-head">
+      <div class="emoji">🍛</div>
+      <h3>志木ランチガチャ</h3>
+      <p>ランキング見ても決まらなかったら、運で決定。</p>
+    </div>
+
+    <div class="slot">
+      <div class="slot-window">
+        <div class="focus"></div>
+        <div id="shopSlot" class="slot-list"></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="shopSpin" class="action-btn main">ランチガチャを回す！</button>
+      <button id="shopCheap" class="action-btn alt">安さ寄り</button>
+      <button id="shopDate" class="action-btn alt">デート感寄り</button>
+    </div>
+
+    <div id="shopResult" class="result">
+      <small>🎯 結果</small>
+      <h4>まだ決まってません</h4>
+      <p>どこが出ても文句なし、ということで（笑）</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>② ランチの後は…？</h2>
+  <div class="gacha after">
+    <div class="gacha-head">
+      <div class="emoji">💘</div>
+      <h3>食後アクションガチャ</h3>
+      <p>ランチの後の行動も、ついでに決めてしまう（笑）</p>
+    </div>
+
+    <div class="slot">
+      <div class="slot-window">
+        <div class="focus"></div>
+        <div id="afterSlot" class="slot-list"></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="afterSpin" class="action-btn main">運命のガチャを回す！</button>
+    </div>
+
+    <div id="afterResult" class="result">
+      <small>❤️ ランチ後の行動</small>
+      <h4>まだ秘密</h4>
+      <p>結果を採用するかどうかは、もちろん2人次第😂</p>
+    </div>
+    <div class="note">※ ハグ・手をつなぐ・チューは、お互いがOKなら採用ということで（笑）</div>
+  </div>
+
+  <div class="holiday-note">
+    ※ 9/23は祝日です。掲載情報をもとに作っていますが、祝日の営業時間・臨時休業・メニュー変更は当日変わる可能性があります。
+  </div>
+</section>
+
+</div>
+<div id="confetti" class="confetti"></div>
+
+<script>
+const shops=[
+ {
+   rank:1,
+   name:"ホルモンうどん焼肉酒場 志木本陣",
+   cheap:5,date:3,station:4,
+   tags:["650円〜","南口徒歩約3分","年中無休"],
+   desc:"とにかくコスパ重視なら強い。うどん650円〜、選べるミニ丼セット950円。しっかり食べても抑えやすい。",
+   hours:"11:00〜15:00（L.O.14:30）",
+   budget:"650〜1,200円前後"
+ },
+ {
+   rank:2,
+   name:"お箸ビストロ SUIREN",
+   cheap:3,date:5,station:5,
+   tags:["東口ほぼすぐ","雰囲気◎","プレートランチ"],
+   desc:"安さ一点ではないけど、2人ランチとして使いやすい。人気のチキンプレートは1,320円で、スープ・紅茶なども楽しめる。",
+   hours:"11:30〜14:45",
+   budget:"1,320〜1,980円前後"
+ },
+ {
+   rank:3,
+   name:"本格中華料理 満腹亭 志木店",
+   cheap:5,date:3,station:4,
+   tags:["東口側","中華ランチ","ご飯系"],
+   desc:"ガッツリ中華を安めに食べたい時の候補。ランチ営業は11時から。価格重視ならかなり相性がいい。",
+   hours:"11:00〜15:00",
+   budget:"1,000円前後〜"
+ },
+ {
+   rank:4,
+   name:"天ぷらとそば ツクシ 志木店",
+   cheap:4,date:4,station:5,
+   tags:["駅直結","そば・天ぷら","入りやすい"],
+   desc:"EQUiA志木内で移動がラク。二八せいろや丼＋そば系まで選べて、軽めにもガッツリにもできる。",
+   hours:"11:00〜23:00",
+   budget:"660〜1,500円前後"
+ },
+ {
+   rank:5,
+   name:"おぼんdeごはん EQUiA志木店",
+   cheap:3,date:4,station:5,
+   tags:["駅直結","定食","ゆっくり系"],
+   desc:"駅から出ずに入れる安定枠。肉・魚・丼など選択肢が多く、好みが割れても決めやすい。",
+   hours:"11:00〜23:00",
+   budget:"1,000〜1,600円前後"
+ }
+];
+
+const afterActions=[
+ {name:"筋トレ",emoji:"🏋️",text:"食後に筋トレ。急に健康デート（笑）"},
+ {name:"ハグ",emoji:"🤗",text:"お互いOKなら、当たり枠ということで（笑）"},
+ {name:"手をつなぐ",emoji:"🤝",text:"帰り道はこれで。自然なやつが出ました。"},
+ {name:"チュー",emoji:"😘",text:"ガチャのせいにできるやつ（笑）もちろんお互いOKなら。"}
+];
+
+const stars=n=>"★".repeat(n)+"☆".repeat(5-n);
+
+document.getElementById("cards").innerHTML=shops.map(s=>`
+<article class="card">
+  <div class="rank">第${s.rank}位</div>
+  <div class="name">${s.name}</div>
+  <div class="badges">
+    ${s.tags.map((t,i)=>`<span class="badge ${i===1?"green":i===2?"pink":""}">${t}</span>`).join("")}
+  </div>
+  <p class="desc">${s.desc}</p>
+  <div class="meta">
+    <div>💰 安さ：<span class="stars">${stars(s.cheap)}</span></div>
+    <div>❤️ 2人向き：<span class="stars">${stars(s.date)}</span></div>
+    <div>🚉 駅近：<span class="stars">${stars(s.station)}</span></div>
+    <div>💴 目安：${s.budget}</div>
+    <div>🕒 ランチ営業時間：${s.hours}</div>
+  </div>
+  <a class="btn" href="https://www.google.com/search?q=${encodeURIComponent(s.name)}" target="_blank" rel="noopener">お店を確認</a>
+</article>`).join("");
+
+const ITEM_H=56;
+
+function setupSlot(el,items){
+  const repeated=[...items,...items,...items,...items,...items];
+  el.innerHTML=repeated.map(x=>`<div class="slot-item">${x.emoji?x.emoji+" ":""}${x.name}</div>`).join("");
+  el.style.transform=`translateY(${-items.length*ITEM_H}px)`;
+}
+
+function popConfetti(){
+  const box=document.getElementById("confetti");
+  box.innerHTML="";
+  const colors=["#f39a48","#f7c968","#ed7f94","#7bd389","#74b9ff","#c792ea","#ffad6f"];
+  for(let i=0;i<55;i++){
+    const p=document.createElement("div");
+    p.className="piece";
+    p.style.left=Math.random()*100+"vw";
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay=(Math.random()*.4)+"s";
+    box.appendChild(p);
+  }
+  setTimeout(()=>box.innerHTML="",2300);
+}
+
+function spinSlot({el,items,chosen,resultEl,render}){
+  const idx=items.findIndex(x=>x.name===chosen.name);
+  const target=3*items.length+idx;
+  el.style.transition="none";
+  el.style.transform="translateY(0px)";
+  void el.offsetWidth;
+  el.style.transition="transform 3.4s cubic-bezier(.13,.82,.18,1)";
+  el.style.transform=`translateY(${-target*ITEM_H}px)`;
+  setTimeout(()=>{
+    resultEl.innerHTML=render(chosen);
+    popConfetti();
+    setTimeout(()=>{
+      el.style.transition="none";
+      el.style.transform=`translateY(${-(items.length+idx)*ITEM_H}px)`;
+    },80);
+  },3500);
+}
+
+const shopSlot=document.getElementById("shopSlot");
+const afterSlot=document.getElementById("afterSlot");
+setupSlot(shopSlot,shops);
+setupSlot(afterSlot,afterActions);
+
+let shopBusy=false,afterBusy=false;
+
+function pickShop(mode="normal"){
+  if(mode==="cheap"){
+    const pool=[shops[0],shops[0],shops[0],shops[2],shops[2],shops[3]];
+    return pool[Math.floor(Math.random()*pool.length)];
+  }
+  if(mode==="date"){
+    const pool=[shops[1],shops[1],shops[1],shops[4],shops[3],shops[0]];
+    return pool[Math.floor(Math.random()*pool.length)];
+  }
+  return shops[Math.floor(Math.random()*shops.length)];
+}
+
+function runShop(mode){
+  if(shopBusy)return;
+  shopBusy=true;
+  const chosen=pickShop(mode);
+  spinSlot({
+    el:shopSlot,items:shops,chosen,
+    resultEl:document.getElementById("shopResult"),
+    render:s=>`<small>🎉 今日のランチは…</small><h4>${s.name}</h4><p>${s.desc}<br>予算目安：${s.budget} ／ ${s.hours}</p>`
+  });
+  setTimeout(()=>shopBusy=false,3600);
+}
+
+function runAfter(){
+  if(afterBusy)return;
+  afterBusy=true;
+  const chosen=afterActions[Math.floor(Math.random()*afterActions.length)];
+  spinSlot({
+    el:afterSlot,items:afterActions,chosen,
+    resultEl:document.getElementById("afterResult"),
+    render:a=>`<small>${a.emoji} ランチ後は…</small><h4>${a.name}</h4><p>${a.text}</p>`
+  });
+  setTimeout(()=>afterBusy=false,3600);
+}
+
+document.getElementById("shopSpin").onclick=()=>runShop("normal");
+document.getElementById("shopCheap").onclick=()=>runShop("cheap");
+document.getElementById("shopDate").onclick=()=>runShop("date");
+document.getElementById("afterSpin").onclick=runAfter;
+</script>
+</body>
+</html>
